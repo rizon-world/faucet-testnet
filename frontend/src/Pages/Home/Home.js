@@ -12,8 +12,10 @@ import '../../App.scss';
 import NetworkContext from '../../contexts/NetworkContext';
 import logoImage from '../../assets/rizon_symbol.svg';
 import arrowImage from '../../assets/arrow.svg';
-// import successIcon from '../../assets/success_icon.svg';
-// import failIcon from '../../assets/fail_icon.svg';
+
+require('dotenv').config();
+const BACK_SERVER = process.env.REACT_APP_RIZON_BACKEND_ENDPOINT;
+const RECAPTCHA_SECRET_KEY = process.env.REACT_APP_RECAPTCHA_SECRET;
 
 const bech32Validate = (param) => {
   try {
@@ -26,10 +28,6 @@ const bech32Validate = (param) => {
 const sendSchema = Yup.object().shape({
   address: Yup.string().required('Required'),
 });
-
-// const DENUMS_TO_TOKEN = {
-//   uatolo: 'Atolo',
-// };
 
 const REQUEST_LIMIT_SECS = 30;
 
@@ -74,9 +72,6 @@ class HomeComponent extends React.Component {
   };
 
   handleSubmit = (values, { resetForm }) => {
-    //const network = this.context.network;
-    //const item = networks.filter((n) => n.key === network)[0];
-    // same shape as initial values
     this.setState({
       sending: true,
       captcha: false,
@@ -89,7 +84,7 @@ class HomeComponent extends React.Component {
       this.setState({ sending: false });
     }, REQUEST_LIMIT_SECS * 1000);
 
-    axios.post('http://3.37.20.108:5000/faucets', {
+    axios.post(`${BACK_SERVER}/faucets`, {
         address: values.address,
         captchaResponse: this.state.response,
       })
@@ -155,7 +150,7 @@ class HomeComponent extends React.Component {
             <ReCAPTCHA
               ref={this.recaptchaRef}
               theme="dark"
-              sitekey="6LfbIyQbAAAAADuQNUImrKD-cRY6GxiBfce4ncBt"
+              sitekey={RECAPTCHA_SECRET_KEY}
               onChange={this.handleCaptcha}
             />
           </div>

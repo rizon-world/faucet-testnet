@@ -1,6 +1,6 @@
 export const networks = [
   {
-    key: 'adora',
+    key: 'groot-',
     lcd: 'https://localhost',
   },
 ];
