@@ -90,7 +90,7 @@ class HomeComponent extends React.Component {
       })
       .then((response) => {
         //const { txHash } = response.data;
-        console.log(`tx Hash : ${response.data}`)
+        console.log(`tx Hash : ${JSON.stringify(response.data)}`)
         toast.success(
           `Faucet Success`,
           { transition: Zoom }
@@ -123,6 +123,7 @@ class HomeComponent extends React.Component {
               break;
           }
         }
+        console.log(err.response.data.error)
         errText = 'Faucet Fail';
         toast.error(`${errText}`, { transition: Zoom });
       });
